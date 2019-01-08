@@ -1,10 +1,11 @@
 import requests
+import random
 import wp_crack
 
 
 # determines if site is WordPress... uses default "wp-login.php" endpoint.
 def check_if_wordpress(site_url):
-  r = requests.post(site_url + "/wp-login.php")
+  r = requests.post(site_url + "/wp-login.php", verify=False)
   if r.status_code == 200:
     return True
   else:
