@@ -5,7 +5,11 @@ import wp_crack
 
 # determines if site is WordPress... uses default "wp-login.php" endpoint.
 def check_if_wordpress(site_url):
-  r = requests.post(site_url + "/wp-login.php", verify=False)
+  try:
+    r = requests.post(site_url + "/wp-login.php", verify=False)
+  except:
+    print(TimeoutError)
+    return 0
   if r.status_code == 200:
     return True
   else:
@@ -47,19 +51,30 @@ def check_vulnerability(wp_url):
 def check_list_vulnerability(wp_sites):
   vulnerable_sites = []
   emails = []
+
+  total = 0
+  num_vulnerable = 0
+  num_wordpress = 0
+
   for site in wp_sites:
+    total += 1
+    print(site)
     if check_if_wordpress(site):
+      num_wordpress += 1
       if check_vulnerability(site):
+        num_vulnerable += 1
         print("VULNERABLE: " + site)
         vulnerable_sites.append(site)
         domain_index = site.find("//") + 2
         emails.append("webmaster@" + site[domain_index:])
     else:
       print("This is not wordpress.")
-  
+
+    print("WP: " + str(num_wordpress) + " | VULNERABLE: " + str(num_vulnerable) + " | TOTAL: " + str(total))
+
   print(vulnerable_sites)
   print(emails)
-  print("\n\n")
+  print("\nLIST: \n")
   return vulnerable_sites
 
 
@@ -72,4 +87,4 @@ def check_list_from_file(filename):
     return check_list_vulnerability(sites_list)
 
 
-print(check_list_from_file("newsites.txt"))
+print(check_list_from_file("notdone.txt"))
