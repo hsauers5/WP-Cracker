@@ -1,14 +1,15 @@
 import requests
 import random
+import sys
 
 # Main application file.
 # This is a tool intended to assess vulnerabilities to brute-force and dictionary attacks in Wordpress
 # Assumes the username is known
 
-wp_url = "https://www.example.com/"
-wp_url += "wp-login.php" # change if needed
+wp_url = sys.argv[1]
+wp_url += "/wp-login.php" # change if needed
 
-wp_user = "admin" # set this to the account you are targeting
+wp_user = sys.argv[2] # set this to the account you are targeting
 
 wp_passwd = "" # holds password value, if needed
 
